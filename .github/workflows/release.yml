@@ -1,0 +1,42 @@
+name: .NET Release Build
+
+on:
+  push:
+    tags:
+      - '*.*.*' # Trigger on tags like 1.0.0, 1.2.3, etc.
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 9.0
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x' # Match the project's TargetFramework
+
+    - name: Restore dependencies
+      run: dotnet restore TerminalCommands/TerminalCommands.csproj
+
+    - name: Build and Publish Linux
+      run: dotnet publish TerminalCommands/TerminalCommands.csproj -c Release --runtime linux-x64 --self-contained true -p:PublishSingleFile=true -p:AssemblyName=KallehaugeTerminalCommands-linux-x64 -o ./publish/linux-x64
+
+    - name: Build and Publish Windows
+      run: dotnet publish TerminalCommands/TerminalCommands.csproj -c Release --runtime win-x64 --self-contained true -p:PublishSingleFile=true -p:AssemblyName=KallehaugeTerminalCommands-win-x64 -o ./publish/win-x64
+
+    - name: Build and Publish OSX
+      run: dotnet publish TerminalCommands/TerminalCommands.csproj -c Release --runtime osx-x64 --self-contained true -p:PublishSingleFile=true -p:AssemblyName=KallehaugeTerminalCommands-osx-x64 -o ./publish/osx-x64
+
+    - name: Create Release and Upload Assets
+      uses: softprops/action-gh-release@v2
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: |
+          ./publish/linux-x64/KallehaugeTerminalCommands-linux-x64
+          ./publish/win-x64/KallehaugeTerminalCommands-win-x64.exe
+          ./publish/osx-x64/KallehaugeTerminalCommands-osx-x64
+      env:
+          GITHUB_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
