@@ -11,7 +11,7 @@ namespace TerminalCommands.Commands;
 public class GitCleanupCommandStrategy : ICommandStrategy
 {
     private readonly Option<bool> _forceOption = new Option<bool>(
-        aliases: new[] { "--force", "-f" },
+        aliases: ["--force", "-f"],
         description: "Force delete branches without prompting.");
 
     private readonly Option<string[]> _excludeOption = new Option<string[]>(
