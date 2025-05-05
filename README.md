@@ -22,6 +22,45 @@ kalle git cleanup -f --exclude main develop  # Force delete all branches except 
 kalle git cleanup --dry-run -f               # Show branches that would be deleted
 ```
 
+### `git init`
+
+Interactively configures useful global Git aliases to streamline common Git operations.
+
+This command checks your global `~/.gitconfig` file and prompts `[Y/n]` (default Yes) before adding or updating the following aliases:
+
+```
+[alias]
+    co = checkout
+    ci = commit
+    st = status
+    br = branch
+    amend = commit --amend
+    cob = checkout -B
+    nuke = reset --hard
+    # The following alias is added dynamically:
+    cleanup = !"<path_to_this_executable>" git cleanup
+```
+
+The `cleanup` alias points directly to the `kalle git cleanup` command using the specific path where you placed the executable. The `!` prefix tells Git to run the command in the shell.
+
+If an alias already exists with the correct command, it will be skipped automatically. If an alias exists but points to a different command, you will be prompted to update it.
+
+After running this command, you can use the configured aliases directly with the standard `git` command.
+
+#### Examples
+
+```bash
+# Run this once to interactively set up the aliases globally
+kalle git init
+
+# After configuration, you can use the aliases:
+git st           # Equivalent to 'git status'
+git co my-branch # Equivalent to 'git checkout my-branch'
+git ci -m "Msg"  # Equivalent to 'git commit -m "Msg"'
+git cleanup      # Equivalent to running '<path_to_this_executable> git cleanup' (e.g., 'kalle git cleanup')
+...
+```
+
 ## Installation
 
 I'm building the executable locally (`dotnet publish`) but I've [setup a workflow to create executable files](.github/workflows/release.yml) if you want to try it out. Please leave feedback or create a PR to fix the installations instructions if they're not sufficient.
