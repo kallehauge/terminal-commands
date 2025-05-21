@@ -61,6 +61,25 @@ git cleanup      # Equivalent to running '<path_to_this_executable> git cleanup'
 ...
 ```
 
+### `mozjpeg`
+
+Optimizes JPEG images using mozjpeg through Docker. The command will automatically check if the Docker image exists and update it if needed.
+
+#### Examples
+
+```bash
+# Optimize an image with default quality (75)
+kalle mozjpeg input.jpg output.jpg
+
+# Optimize with custom quality (5-95 is recommended)
+kalle mozjpeg --quality 85 input.jpg output.jpg
+
+# Update the mozjpeg Docker image
+kalle mozjpeg --update
+```
+
+The command supports the following file extensions: `.jpg`, `.jpeg`, and `.png`.
+
 ## Installation
 
 I'm building the executable locally (`dotnet publish`) but I've [setup a workflow to create executable files](.github/workflows/release.yml) if you want to try it out. Please leave feedback or create a PR to fix the installations instructions if they're not sufficient.
@@ -105,3 +124,19 @@ Everything is fully transparent though, so you can verify that the `release.yml`
 I haven't used Windows for anything programming related since I first learned HTML and installed WAMP or XAMPP. So I'm not much help here. [I assume you start by downloading the `.exe` file](https://github.com/kallehauge/terminal-commands/releases/latest) 😄 Basically me many years ago on Windows 👇
 
 ![Windows 90s kid](/docs/images/windows-ok.gif)
+
+## Development
+
+The project includes a Makefile with two main commands:
+
+```bash
+# Build a release version for OSX
+make build-osx
+
+# Run the project in watch mode (auto-rebuilds on file changes)
+make watch
+```
+
+The `build-osx` command creates a self-contained executable in the `./publish/osx-x64` directory, which is what gets released in the GitHub releases.
+
+The `watch` command is useful during development as it automatically rebuilds and runs the project whenever you make changes to the code.

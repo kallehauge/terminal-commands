@@ -57,6 +57,20 @@ class Program
         // Add the "git" command (and its subcommands) to the root
         rootCommand.AddCommand(gitCommand);
 
+        // Register the "mozjpeg" command
+        var mozjpegCommand = new Command("mozjpeg",
+            "Optimize JPEG images using mozjpeg.\n\n" +
+            "Examples:\n" +
+            "  kalle mozjpeg input.jpg output.jpg              # Optimize with default quality (75)\n" +
+            "  kalle mozjpeg --quality 85 input.jpg output.jpg # Optimize with custom quality\n" +
+            "  kalle mozjpeg --update                          # Update the mozjpeg Docker image\n\n" +
+            "The command uses Docker to run mozjpeg, so make sure Docker is installed and running."
+        );
+        var mozjpegStrategy = new MozjpegCommandStrategy();
+        mozjpegStrategy.ConfigureCommand(mozjpegCommand);
+        mozjpegCommand.SetHandler(mozjpegStrategy.ExecuteAsync);
+        rootCommand.AddCommand(mozjpegCommand);
+
         // Parse the command line arguments and invoke the appropriate handler
         return await rootCommand.InvokeAsync(args);
     }
