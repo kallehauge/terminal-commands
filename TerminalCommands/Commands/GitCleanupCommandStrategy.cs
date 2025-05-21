@@ -96,7 +96,7 @@ public class GitCleanupCommandStrategy : ICommandStrategy
             // Prompt user if not using --force
             if (!force)
             {
-                Console.Write($"{(dryRun ? "[Dry Run] Would delete" : "Delete")} branch '{trimmedBranch}'? (y/n): ");
+                Console.Write($"{(dryRun ? "[Dry Run] Would delete" : "Delete")} branch '{trimmedBranch}'? (y/N): ");
                 string? choice = Console.ReadLine()?.Trim().ToLower();
                 if (choice == "y")
                 {
