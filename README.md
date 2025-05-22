@@ -63,7 +63,7 @@ git cleanup      # Equivalent to running '<path_to_this_executable> git cleanup'
 
 ### `mozjpeg`
 
-Optimizes JPEG images using mozjpeg through Docker. The command will automatically check if the Docker image exists and update it if needed.
+Optimizes JPEG images using mozjpeg through Docker. The command will automatically check if the Docker image exists and pull it if needed.
 
 #### Examples
 
@@ -76,6 +76,35 @@ kalle mozjpeg --quality 85 input.jpg output.jpg
 
 # Update the mozjpeg Docker image
 kalle mozjpeg --update
+```
+
+The command supports the following file extensions: `.jpg`, `.jpeg`, and `.png`.
+
+### `guetzli`
+
+Optimizes JPEG images using Google's Guetzli through Docker. The command will automatically check if the Docker image exists and pull it if needed.
+
+#### Options
+
+- `--quality <int>`: Quality of the output image (84-100, default 95).
+- `--memlimit <int>`: Memory limit in MB (default: 6000).
+- `--verbose`, `-v`: Print a verbose trace of all attempts to the console.
+- `--update`, `-u`: Update the Guetzli Docker image to the latest version.
+
+#### Usage
+
+```bash
+# Optimize an image with default quality (95)
+kalle guetzli input.jpg output.jpg
+
+# Optimize with custom quality and memory limit
+kalle guetzli --quality 90 --memlimit 8000 input.jpg output.jpg
+
+# Enable verbose output
+kalle guetzli --verbose input.jpg output.jpg
+
+# Update the Guetzli Docker image
+kalle guetzli --update
 ```
 
 The command supports the following file extensions: `.jpg`, `.jpeg`, and `.png`.
