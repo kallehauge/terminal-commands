@@ -71,6 +71,23 @@ class Program
         mozjpegCommand.SetHandler(mozjpegStrategy.ExecuteAsync);
         rootCommand.AddCommand(mozjpegCommand);
 
+        // Register the "guetzli" command
+        var guetzliCommand = new Command("guetzli",
+            "Optimize JPEG images using Google's Guetzli.\n\n" +
+            "Examples:\n" +
+            "  kalle guetzli input.jpg output.jpg                  # Optimize with default quality (95)\n" +
+            "  kalle guetzli --quality 90 input.jpg output.jpg     # Optimize with custom quality\n" +
+            "  kalle guetzli --memlimit 8000 input.jpg output.jpg  # Set memory limit to 8000MB\n" +
+            "  kalle guetzli --verbose input.jpg output.jpg        # Show detailed progress\n" +
+            "  kalle guetzli --update                              # Update the Guetzli Docker image\n\n" +
+            "The command uses Docker to run Guetzli, so make sure Docker is installed and running.\n" +
+            "Note: Guetzli uses a large amount of memory (about 300MB per 1MPix of input image)."
+        );
+        var guetzliStrategy = new GuetzliCommandStrategy();
+        guetzliStrategy.ConfigureCommand(guetzliCommand);
+        guetzliCommand.SetHandler(guetzliStrategy.ExecuteAsync);
+        rootCommand.AddCommand(guetzliCommand);
+
         // Parse the command line arguments and invoke the appropriate handler
         return await rootCommand.InvokeAsync(args);
     }
